@@ -58,7 +58,7 @@ const App = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="grow">
+      <main className="grow relative z-0">
         <Hero />
         <FeaturedCourses />
         <TikTokVideos videos={tiktokVideos} username="studywithali_" />

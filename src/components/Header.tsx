@@ -65,15 +65,16 @@ const Header = () => {
 
   return (
     <header
-      className={`bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-[100] transition-all duration-150 ${
+      className={`bg-white/95 shadow-lg sticky top-0 transition-all duration-150 overflow-visible ${
         isScrolled ? 'shadow-xl' : 'shadow-md'
       }`}
+      style={{ zIndex: 9999 }}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative overflow-visible">
         <div className="flex items-center justify-between py-4">
           <a
             href="/"
-            className="flex items-center transform transition-transform hover:scale-105 duration-150 cursor-pointer"
+            className="flex items-center transform transition-transform hover:scale-105 duration-150 cursor-pointer relative z-0"
             aria-label="Study with Ali Home"
           >
             <img
@@ -83,11 +84,11 @@ const Header = () => {
             />
           </a>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8 relative z-10002">
             {navItems.map((item, index) => (
               <div
                 key={item.label}
-                className="relative"
+                className="relative z-10002"
                 onMouseEnter={() => item.dropdown && setOpenDropdown(item.label)}
                 onMouseLeave={() => item.dropdown && handleDropdownClose()}
               >
@@ -111,8 +112,11 @@ const Header = () => {
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-150 group-hover:w-full"></span>
                 </a>
                 {item.dropdown && openDropdown === item.label && (
-                  <div className="absolute top-full left-0 pt-2 w-48 z-[100]">
-                    <div className="bg-white rounded-lg shadow-xl border border-gray-100 py-2 animate-fade-in">
+                  <div
+                    className="absolute top-full left-0 pt-2 w-48"
+                    style={{ zIndex: 10003 }}
+                  >
+                    <div className="bg-white rounded-lg shadow-2xl border border-gray-100 py-2 animate-fade-in">
                       {item.dropdown.map((dropdownItem) => (
                         <a
                           key={dropdownItem.label}
@@ -131,7 +135,7 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 relative z-0">
             <a
               href="mailto:info@studywithali.co.uk"
               className="text-gray-700 hover:text-indigo-600 font-medium transition-all duration-150 hover:scale-105 text-sm cursor-pointer"

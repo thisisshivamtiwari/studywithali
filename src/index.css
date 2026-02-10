@@ -234,7 +234,7 @@ a[href],
   cursor: pointer;
 }
 
-/* Prevent scrollbars in all sections */
+/* Prevent scrollbars in all sections (exclude header so dropdown is not clipped) */
 section {
   overflow-x: hidden;
 }
@@ -242,4 +242,10 @@ section {
 /* Ensure containers don't create scrollbars */
 .container {
   overflow-x: hidden;
+}
+
+/* Keep header and nav dropdown above all page content - no overflow so dropdown is visible and no scrollbar */
+header,
+header .container {
+  overflow: visible !important;
 }
