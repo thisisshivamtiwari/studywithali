@@ -249,3 +249,63 @@ header,
 header .container {
   overflow: visible !important;
 }
+
+/* Material-style form field (outlined) */
+.input-material {
+  @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 transition-all duration-200;
+  @apply focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none;
+  @apply hover:border-gray-300;
+}
+
+.input-material-label {
+  @apply block text-sm font-medium text-gray-600 mb-1.5 tracking-tight;
+}
+
+/* Material-style card elevation */
+.card-material {
+  @apply bg-white rounded-2xl border border-gray-100 shadow-sm transition-all duration-300;
+}
+
+.card-material:hover {
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08);
+}
+
+/* Chip (selected / unselected) */
+.chip-material {
+  @apply inline-flex items-center rounded-full border-2 px-4 py-2 text-sm font-medium transition-all duration-200 cursor-pointer select-none;
+}
+
+.chip-material-unselected {
+  @apply border-gray-200 bg-white text-gray-600 hover:border-indigo-300 hover:bg-indigo-50/50;
+}
+
+.chip-material-selected {
+  @apply border-indigo-500 bg-indigo-500 text-white shadow-sm;
+}
+
+/* Wizard step transition */
+.wizard-step-enter {
+  opacity: 0;
+  transform: translateX(16px);
+}
+
+.wizard-step-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+
+.wizard-step-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.wizard-step-exit-active {
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.wizard-step-content {
+  animation: fadeInUp 0.3s ease-out;
+}

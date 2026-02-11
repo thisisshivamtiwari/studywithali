@@ -7,7 +7,7 @@ const AboutUs = () => {
   const { ref: commitRef, isVisible: commitVisible } = useScrollAnimation(0.2)
 
   const handleBookNow = () => {
-    window.location.href = '#admission'
+    window.location.href = '/admission'
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

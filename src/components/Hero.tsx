@@ -1,6 +1,6 @@
 const Hero = () => {
   const handleBookNow = () => {
-    window.location.href = '#admission'
+    window.location.href = '/admission'
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

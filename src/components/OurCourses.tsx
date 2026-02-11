@@ -40,7 +40,7 @@ const OurCourses = () => {
       category: 'ADULTS',
       title: 'Explore our diverse range of adult courses',
       description: 'Explore our diverse range of adult courses at Elite Stars Academy:',
-      link: '#adults',
+      link: '/adults',
       color: 'from-green-500 to-green-600',
     },
   ]

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { FaTiktok, FaInstagram, FaYoutube, FaFacebook, FaChevronDown } from 'react-icons/fa'
 import logo from '../assets/Website-logo-Study-with-ali-600.png'
 
@@ -39,21 +40,21 @@ const Header = () => {
       label: 'Our Courses',
       href: '#courses',
       dropdown: [
-        { label: '11+ Preparation', href: '#11plus' },
-        { label: 'Primary Learning', href: '#primary' },
-        { label: 'A LEVEL', href: '#alevel' },
-        { label: 'GCSE', href: '#gcse' },
-        { label: 'ADULT COURSES', href: '#adults' },
+        { label: '11+ Preparation', href: '/11plus' },
+        { label: 'Primary Learning', href: '/primary' },
+        { label: 'A LEVEL', href: '/alevel' },
+        { label: 'GCSE', href: '/gcse' },
+        { label: 'ADULT COURSES', href: '/adults' },
       ],
     },
-    { label: 'Admission Form', href: '#admission' },
+    { label: 'Admission Form', href: '/admission' },
     {
       label: 'Predicted papers',
       href: '#papers',
       dropdown: [{ label: 'GCSE', href: '#gcse-papers' }],
     },
     { label: 'Resources', href: '#resources' },
-    { label: 'Contact Us', href: '#contact' },
+    { label: 'Contact Us', href: '/contact' },
   ]
 
   const socialLinks = [
@@ -65,10 +66,10 @@ const Header = () => {
 
   return (
     <header
-      className={`bg-white/95 shadow-lg sticky top-0 transition-all duration-150 overflow-visible ${
+      className={`bg-white/95 shadow-lg left-0 right-0 w-full transition-all duration-150 overflow-visible ${
         isScrolled ? 'shadow-xl' : 'shadow-md'
       }`}
-      style={{ zIndex: 9999 }}
+      style={{ position: 'fixed', top: 0, zIndex: 9999 }}
     >
       <div className="container mx-auto px-4 relative overflow-visible">
         <div className="flex items-center justify-between py-4">
@@ -117,17 +118,29 @@ const Header = () => {
                     style={{ zIndex: 10003 }}
                   >
                     <div className="bg-white rounded-lg shadow-2xl border border-gray-100 py-2 animate-fade-in">
-                      {item.dropdown.map((dropdownItem) => (
-                        <a
-                          key={dropdownItem.label}
-                          href={dropdownItem.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors cursor-pointer"
-                          onClick={handleDropdownClose}
-                          aria-label={dropdownItem.label}
-                        >
-                          {dropdownItem.label}
-                        </a>
-                      ))}
+                      {item.dropdown.map((dropdownItem) =>
+                        dropdownItem.href.startsWith('/') ? (
+                          <Link
+                            key={dropdownItem.label}
+                            to={dropdownItem.href}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors cursor-pointer"
+                            onClick={handleDropdownClose}
+                            aria-label={dropdownItem.label}
+                          >
+                            {dropdownItem.label}
+                          </Link>
+                        ) : (
+                          <a
+                            key={dropdownItem.label}
+                            href={dropdownItem.href}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors cursor-pointer"
+                            onClick={handleDropdownClose}
+                            aria-label={dropdownItem.label}
+                          >
+                            {dropdownItem.label}
+                          </a>
+                        )
+                      )}
                     </div>
                   </div>
                 )}
@@ -232,17 +245,29 @@ const Header = () => {
                 </div>
                 {item.dropdown && openDropdown === item.label && (
                   <div className="pl-4 mt-1 mb-2 space-y-1 animate-fade-in">
-                    {item.dropdown.map((dropdownItem) => (
-                      <a
-                        key={dropdownItem.label}
-                        href={dropdownItem.href}
-                        className="block py-2 text-sm text-gray-600 hover:text-indigo-600 transition-colors cursor-pointer"
-                        onClick={() => setIsMenuOpen(false)}
-                        aria-label={dropdownItem.label}
-                      >
-                        {dropdownItem.label}
-                      </a>
-                    ))}
+                    {item.dropdown.map((dropdownItem) =>
+                      dropdownItem.href.startsWith('/') ? (
+                        <Link
+                          key={dropdownItem.label}
+                          to={dropdownItem.href}
+                          className="block py-2 text-sm text-gray-600 hover:text-indigo-600 transition-colors cursor-pointer"
+                          onClick={() => setIsMenuOpen(false)}
+                          aria-label={dropdownItem.label}
+                        >
+                          {dropdownItem.label}
+                        </Link>
+                      ) : (
+                        <a
+                          key={dropdownItem.label}
+                          href={dropdownItem.href}
+                          className="block py-2 text-sm text-gray-600 hover:text-indigo-600 transition-colors cursor-pointer"
+                          onClick={() => setIsMenuOpen(false)}
+                          aria-label={dropdownItem.label}
+                        >
+                          {dropdownItem.label}
+                        </a>
+                      )
+                    )}
                   </div>
                 )}
               </div>

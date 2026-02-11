@@ -1,20 +1,21 @@
+import { Link } from 'react-router-dom'
 import { FaTiktok, FaInstagram, FaYoutube, FaFacebook } from 'react-icons/fa'
 
 const Footer = () => {
   const quickLinks = [
     { label: 'Our Courses', href: '#courses' },
-    { label: 'Admission Form', href: '#admission' },
+    { label: 'Admission Form', href: '/admission' },
     { label: 'Predicted papers', href: '#papers' },
     { label: 'Resources', href: '#resources' },
-    { label: 'Contact Us', href: '#contact' },
+    { label: 'Contact Us', href: '/contact' },
   ]
 
   const courseLinks = [
-    { label: 'ADULT COURSES', href: '#adults' },
-    { label: 'A LEVEL', href: '#alevel' },
-    { label: 'GCSE', href: '#gcse' },
-    { label: '11+ Preparation', href: '#11plus' },
-    { label: 'Primary Learning', href: '#primary' },
+    { label: 'ADULT COURSES', href: '/adults' },
+    { label: 'A LEVEL', href: '/alevel' },
+    { label: 'GCSE', href: '/gcse' },
+    { label: '11+ Preparation', href: '/11plus' },
+    { label: 'Primary Learning', href: '/primary' },
   ]
 
   const socialLinks = [
@@ -38,13 +39,23 @@ const Footer = () => {
                   style={{ animationDelay: `${index * 0.05}s` }}
                   className="animate-fade-in"
                 >
-                  <a
-                    href={link.href}
-                    className="hover:text-teal-400 transition-all duration-300 transform hover:translate-x-2 inline-block cursor-pointer"
-                    aria-label={link.label}
-                  >
-                    {link.label}
-                  </a>
+                  {link.href.startsWith('/') ? (
+                    <Link
+                      to={link.href}
+                      className="hover:text-teal-400 transition-all duration-300 transform hover:translate-x-2 inline-block cursor-pointer"
+                      aria-label={link.label}
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="hover:text-teal-400 transition-all duration-300 transform hover:translate-x-2 inline-block cursor-pointer"
+                      aria-label={link.label}
+                    >
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
