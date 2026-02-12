@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# Study with Ali
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Website for **Elite Stars Academy** – tuition and courses (11+, Primary, GCSE, A-Level, Adult learning) with admission and contact flows.
 
-Currently, two official plugins are available:
+## Tech stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** + **TypeScript**
+- **Vite 7** – dev server and build
+- **React Router 7** – client-side routing
+- **Tailwind CSS 4** – styling
+- **react-icons** – icons
 
-## React Compiler
+## Quick start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Install dependencies
+npm install
 
-## Expanding the ESLint configuration
+# Run dev server (http://localhost:5173)
+npm run dev
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Production build
+npm run build
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Preview production build
+npm run preview
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Lint
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── App.tsx              # Router, layout (Header + main + Footer)
+├── main.tsx
+├── index.css            # Tailwind, global styles, animations
+├── assets/              # Images (e.g. logo)
+├── components/          # Shared UI
+│   ├── Header.tsx       # Nav, dropdowns, social links
+│   ├── Footer.tsx
+│   ├── Hero.tsx
+│   ├── AboutUs.tsx
+│   ├── FeaturedCourses.tsx
+│   ├── OurCourses.tsx
+│   ├── TikTokVideos.tsx
+│   └── Newsletter.tsx
+├── pages/               # Route-level pages
+│   ├── Home.tsx
+│   ├── ElevenPlusPreparation.tsx
+│   ├── PrimaryLearning.tsx
+│   ├── ALevel.tsx
+│   ├── GCSE.tsx
+│   ├── AdultCourses.tsx
+│   ├── AdmissionForm.tsx   # Multi-step wizard
+│   └── ContactUs.tsx       # Contact form + map
+├── hooks/
+│   └── useScrollAnimation.ts
+└── utils/
+    └── tiktokApi.ts
+```
+
+## Routes
+
+| Path        | Page              |
+|------------|-------------------|
+| `/`        | Home              |
+| `/11plus`  | 11+ Preparation   |
+| `/primary` | Primary Learning  |
+| `/alevel`  | A Level           |
+| `/gcse`    | GCSE              |
+| `/adults`  | Adult Courses     |
+| `/admission` | Admission Form (wizard) |
+| `/contact` | Contact Us (form + map) |
+
+## Features
+
+- **Course pages** – Hero, content sections, pricing/CTAs, “Book Now” → admission form
+- **Admission form** – 6-step wizard (Personal → Address → Urgent contact → Education → Tuition → Agreement) with validation and progress stepper
+- **Contact** – Address & email, message form, embedded map (same column as “Reach us”)
+- **Design** – Indigo/purple/pink gradient hero, `card-material` sections with gradient accent, scroll animations, responsive layout
+
+## Build output
+
+Production build goes to `dist/`. Deploy that folder to any static host (Vercel, Netlify, GitHub Pages, etc.).
+
+## License
+
+Private project.
