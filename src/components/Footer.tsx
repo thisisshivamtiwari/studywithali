@@ -5,7 +5,7 @@ const Footer = () => {
   const quickLinks = [
     { label: 'Our Courses', href: '#courses' },
     { label: 'Admission Form', href: '/admission' },
-    { label: 'Predicted papers', href: '#papers' },
+    { label: 'Predicted papers', href: '/papers' },
     { label: 'Resources', href: '#resources' },
     { label: 'Contact Us', href: '/contact' },
   ]

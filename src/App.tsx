@@ -9,6 +9,8 @@ import GCSE from './pages/GCSE'
 import AdultCourses from './pages/AdultCourses'
 import AdmissionForm from './pages/AdmissionForm'
 import ContactUs from './pages/ContactUs'
+import PredictedPapers from './pages/PredictedPapers'
+import AdminPredictedPapers from './pages/AdminPredictedPapers'
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
             <Route path="/adults" element={<AdultCourses />} />
             <Route path="/admission" element={<AdmissionForm />} />
             <Route path="/contact" element={<ContactUs />} />
+            <Route path="/papers" element={<PredictedPapers />} />
+            <Route path="/admin/papers" element={<AdminPredictedPapers />} />
           </Routes>
         </main>
         <Footer />

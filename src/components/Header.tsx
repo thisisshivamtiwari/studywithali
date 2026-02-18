@@ -50,8 +50,8 @@ const Header = () => {
     { label: 'Admission Form', href: '/admission' },
     {
       label: 'Predicted papers',
-      href: '#papers',
-      dropdown: [{ label: 'GCSE', href: '#gcse-papers' }],
+      href: '/papers',
+      dropdown: [{ label: 'GCSE', href: '/papers' }],
     },
     { label: 'Resources', href: '#resources' },
     { label: 'Contact Us', href: '/contact' },
