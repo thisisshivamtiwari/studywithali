@@ -12,6 +12,7 @@ import {
   FaFileSignature,
   FaCheck,
 } from 'react-icons/fa'
+import { supabase } from '../lib/supabaseClient'
 
 const UK_STATES = ['England', 'Scotland', 'Wales', 'Northern Ireland']
 
@@ -133,6 +134,9 @@ const AdmissionForm = () => {
   const { ref: formRef, isVisible: formVisible } = useScrollAnimation(0.1)
   const [form, setForm] = useState<FormState>(initialFormState)
   const [currentStep, setCurrentStep] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
   const handleChange = (field: keyof FormState, value: string | string[] | boolean) => {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -171,11 +175,44 @@ const AdmissionForm = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!validateStep(5)) return
-    console.log('Admission form submitted', form)
-    alert('Thank you. Your application has been submitted.')
+    if (!validateStep(5)) {
+      return
+    }
+    if (isSubmitting) {
+      return
+    }
+    setSubmitError(null)
+    setSubmitMessage(null)
+    setIsSubmitting(true)
+    try {
+      const { error } = await supabase.from('admission_applications').insert([
+        {
+          first_name: form.firstName,
+          last_name: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          current_school: form.currentSchool,
+          current_year: form.currentYear,
+          tuition_required: form.tuitionRequired,
+          data: form,
+        },
+      ])
+
+      if (error) {
+        setSubmitError(error.message || 'Unable to submit application. Please try again.')
+        return
+      }
+
+      setSubmitMessage('Thank you. Your application has been submitted.')
+      setForm(initialFormState)
+      setCurrentStep(0)
+    } catch {
+      setSubmitError('Unable to submit application. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const inputClass = 'input-material'
@@ -414,6 +451,16 @@ const AdmissionForm = () => {
         }`}
       >
         <div className="container mx-auto px-4 max-w-3xl">
+          {submitError && (
+            <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {submitError}
+            </div>
+          )}
+          {submitMessage && (
+            <div className="mb-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+              {submitMessage}
+            </div>
+          )}
           {/* Stepper */}
           <div className="mb-8 md:mb-10">
             <div className="flex items-center justify-between gap-1 overflow-x-auto pb-2 scrollbar-hide">
@@ -484,10 +531,13 @@ const AdmissionForm = () => {
                 {isLastStep ? (
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="bg-linear-to-r from-indigo-600 to-purple-600 text-white px-10 py-3.5 rounded-xl font-semibold text-base shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 focus:ring-offset-2 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 btn-shine relative overflow-hidden cursor-pointer"
                     aria-label="Submit admission form"
                   >
-                    <span className="relative z-10">Submit application</span>
+                    <span className="relative z-10">
+                      {isSubmitting ? 'Submitting…' : 'Submit application'}
+                    </span>
                   </button>
                 ) : (
                   <button

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { FaChevronRight, FaMapMarkerAlt, FaEnvelope, FaPaperPlane } from 'react-icons/fa'
+import { supabase } from '../lib/supabaseClient'
 
 const ADDRESS = '123 high street, B12 0JU'
 const EMAIL = 'info@studywithali.co.uk'
@@ -28,16 +29,46 @@ const ContactUs = () => {
   const { ref: mainRef, isVisible: mainVisible } = useScrollAnimation(0.12)
   const { ref: mapRef, isVisible: mapVisible } = useScrollAnimation(0.1)
   const [form, setForm] = useState<ContactFormState>(initialContactForm)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
   const handleChange = (field: keyof ContactFormState, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Contact form submitted', form)
-    setForm(initialContactForm)
-    alert('Thank you. Your message has been sent.')
+    if (isSubmitting) {
+      return
+    }
+    setSubmitError(null)
+    setSubmitMessage(null)
+
+    setIsSubmitting(true)
+    try {
+      const { error } = await supabase.from('contact_messages').insert([
+        {
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          subject: form.subject,
+          message: form.message,
+        },
+      ])
+
+      if (error) {
+        setSubmitError(error.message || 'Unable to send your message. Please try again.')
+        return
+      }
+
+      setSubmitMessage('Thank you. Your message has been sent.')
+      setForm(initialContactForm)
+    } catch {
+      setSubmitError('Unable to send your message. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -174,6 +205,16 @@ const ContactUs = () => {
                       <p className="text-gray-500 text-sm mb-6">
                         Fill in the form and we&apos;ll get back to you soon.
                       </p>
+                      {submitError && (
+                        <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+                          {submitError}
+                        </div>
+                      )}
+                      {submitMessage && (
+                        <div className="mb-4 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                          {submitMessage}
+                        </div>
+                      )}
                       <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                           <div>
@@ -252,11 +293,14 @@ const ContactUs = () => {
                         <div className="pt-2">
                           <button
                             type="submit"
-                            className="inline-flex items-center gap-2 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-semibold px-8 py-3.5 rounded-xl shadow-md hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 focus:ring-offset-2 transition-all cursor-pointer btn-shine relative overflow-hidden"
+                            disabled={isSubmitting}
+                            className="inline-flex items-center gap-2 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-semibold px-8 py-3.5 rounded-xl shadow-md hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 focus:ring-offset-2 transition-all cursor-pointer btn-shine relative overflow-hidden disabled:opacity-70 disabled:cursor-default"
                             aria-label="Send message"
                           >
                             <FaPaperPlane className="w-4 h-4 relative z-10" aria-hidden="true" />
-                            <span className="relative z-10">Send Message</span>
+                            <span className="relative z-10">
+                              {isSubmitting ? 'Sending…' : 'Send Message'}
+                            </span>
                           </button>
                         </div>
                       </form>

@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaTiktok, FaInstagram, FaYoutube, FaFacebook, FaChevronDown } from 'react-icons/fa'
 import logo from '../assets/Website-logo-Study-with-ali-600.png'
+import { useAuth } from '../context/AuthContext'
 
 const Header = () => {
+  const navigate = useNavigate()
+  const { user, handleLogout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
@@ -47,12 +50,8 @@ const Header = () => {
         { label: 'ADULT COURSES', href: '/adults' },
       ],
     },
+    { label: 'Exam Papers', href: '/exam-papers' },
     { label: 'Admission Form', href: '/admission' },
-    {
-      label: 'Predicted papers',
-      href: '/papers',
-      dropdown: [{ label: 'GCSE', href: '/papers' }],
-    },
     { label: 'Resources', href: '#resources' },
     { label: 'Contact Us', href: '/contact' },
   ]
@@ -146,6 +145,35 @@ const Header = () => {
                 )}
               </div>
             ))}
+            {!user && (
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 px-3 py-1.5 rounded-lg border border-indigo-100 hover:border-indigo-300 bg-indigo-50 hover:bg-indigo-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                aria-label="Login"
+              >
+                Login
+              </button>
+            )}
+            {user && (
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
+                  {user.role === 'admin' ? 'Admin' : 'User'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleLogout().then(() => {
+                      navigate('/')
+                    })
+                  }}
+                  className="text-sm font-semibold text-gray-700 hover:text-red-600 px-2 py-1 rounded-lg border border-transparent hover:border-red-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500/60"
+                  aria-label="Logout"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </nav>
 
           <div className="hidden md:flex items-center gap-4 relative z-0">
@@ -296,6 +324,34 @@ const Header = () => {
                 )
               })}
             </div>
+            {!user && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMenuOpen(false)
+                  navigate('/login')
+                }}
+                className="mt-2 inline-flex items-center justify-center rounded-lg border border-indigo-100 bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                aria-label="Login"
+              >
+                Login
+              </button>
+            )}
+            {user && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMenuOpen(false)
+                  handleLogout().then(() => {
+                    navigate('/')
+                  })
+                }}
+                className="mt-2 inline-flex items-center justify-center rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-100 hover:text-red-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500/60"
+                aria-label="Logout"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </nav>
       </div>
